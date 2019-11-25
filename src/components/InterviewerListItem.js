@@ -8,7 +8,7 @@ export default function InterviewerListItem(props) {
     // "interviewers__item__item--full": props.spots === 0,
   });
   return (
-    <li className={interviewerClass} onClick={() => props.setInterviewer(props.name)}>
+    <li className={interviewerClass} onClick={props.setInterviewer}>
       <img
         className="interviewers__item-image"
         src={props.avatar}
@@ -17,4 +17,5 @@ export default function InterviewerListItem(props) {
       {props.selected && props.name}
     </li>
   );
+  
 }
