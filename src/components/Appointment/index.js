@@ -3,8 +3,9 @@
 
 import React from "react";
 
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+// import Header from "Header";
+// import Empty from "Empty";
+// import Show from "Show";
 
 import "components/Appointment/styles.scss";
 // import Button from "components/Button";
@@ -12,5 +13,10 @@ import "components/Appointment/styles.scss";
 
 
 export default function Appointment(props) {
-  return <article className="appointment"></article>
+  return (
+  <article className="appointment">
+  {/* <Header>{props.time}</Header>
+  { props.interview ? <Show /> : <Empty />} */}
+  </article>
+  );
 }
