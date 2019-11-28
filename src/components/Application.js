@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import Appointment from "components/Appointment";
 import DayList from "components/DayList";
-const { getAppointmentsForDay, getInterview } = require("../helpers/selectors.js");
+const { getAppointmentsForDay, getInterview, getInterviewersForDay } = require("../helpers/selectors.js");
 const axios = require("axios");
 
 export default function Application(props) {
@@ -30,13 +30,14 @@ export default function Application(props) {
     });
     }, []);
 
-    console.log(setState);
+    // returns the appointment component for the day
     const apps = getAppointmentsForDay(state, state.day);
     console.log(apps);
     const appointmentComponents = apps.map(appointment => {
       const interview = getInterview(state, appointment.interview);
+      const interviewers = getInterviewersForDay(state, state.day)
       return (
-        <Appointment key={appointment.id} {...appointment} interview={interview} />
+        <Appointment key={appointment.id} {...appointment} interview={interview} interviewers={interviewers}/>
       );
     });
 

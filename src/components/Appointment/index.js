@@ -13,7 +13,6 @@ import "components/Appointment/styles.scss";
 // import Button from "components/Button";
 
 
-
 export default function Appointment(props) {
 
   const EMPTY = "EMPTY";
@@ -23,6 +22,8 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+
+  console.log('--------PROPS----------hit', props);
 
   return (
   <article className="appointment">
@@ -36,7 +37,8 @@ export default function Appointment(props) {
     )}
     {mode === CREATE && (
       <Form
-        interviewers={[]}
+        interviewers={props.interviewers}
+        // interviewers={getInterviewersByDay(props, state.day)}
         onCancel={ () => back() }
         // {props.interview.interviewer}
       />

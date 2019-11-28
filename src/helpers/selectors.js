@@ -24,6 +24,6 @@ export function getInterviewersForDay(state, day){
   }
   const dayAppointments = state.days.find(obj => obj.name === day);
   // the filter => filters the array if interviwer is schduled(not null). // map => assign the interviwer object for each value from the filtered array
-  return (!dayAppointments || dayAppointments.appointments.length < 1 ) ? [] : dayAppointments.appointments.filter(slot  => state.appointments[slot].interview).map(slotBooked => slotBooked = state.interviewers[state.appointments[slotBooked].interview.interviewer]);
+  return (!dayAppointments || dayAppointments.appointments.length < 1 ) ? [] : dayAppointments.appointments.filter(slot  => state.appointments[slot].interview).map((slotBooked) => slotBooked = state.interviewers[state.appointments[slotBooked].interview.interviewer]).filter((e, i, arr) => arr.indexOf(e) === i);
 }
 
