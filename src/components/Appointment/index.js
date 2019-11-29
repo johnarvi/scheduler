@@ -2,7 +2,7 @@
 // how to call the above in other files
 
 import React from "react";
-import useVisualMode from "hooks/useVisualMode.js"
+import useVisualMode from "hooks/useVisualMode.js";
 
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
@@ -33,8 +33,6 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
   
-  console.log("---------------------App Props", props);
-
   function save(name, interviewer) {
     const interview = {
       student: name,
