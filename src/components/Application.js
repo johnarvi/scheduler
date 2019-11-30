@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "components/Application.scss";
 import Appointment from "components/Appointment";
@@ -16,7 +16,7 @@ export default function Application(props) {
     bookInterview,
     cancelInterview
   } = useApplicationData();
-  
+
   const apps = getAppointmentsForDay(state, state.day);
   console.log(apps);
   const interviewers = getInterviewersForDay(state, state.day)
