@@ -6,6 +6,7 @@ const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
 function reducer(state, action) {
+  console.log("-------------STATE-------------",state.days[1] )
   switch (action.type) {
 
     case SET_DAY:
@@ -21,6 +22,10 @@ function reducer(state, action) {
     case SET_INTERVIEW: {
       const { id, interview } = action;
 
+      // for (let day of state.days) {
+
+      // }
+      console.log("***************************//////////////*******",state.days[0].spots)
       return {
         ...state,
         appointments: {
@@ -62,22 +67,39 @@ export default function useApplicationData() {
   function bookInterview(id, interview) {
     return axios.put("/api/appointments/" + id, {interview})
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
-      .then(() => spotsRemaining(state.appointments))
+      .then(() => spotsPerDay(state.days))
   }
 
   function cancelInterview(id) {
     return axios.delete("/api/appointments/" + id)
       .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
-      .then(() => spotsRemaining(state.appointments))
+      .then(() => spotsPerDay(state.days))
   }
 
-  function spotsRemaining(apptObj) {
-    const appointments = Object.keys(apptObj);
-    const spotsFilled = appointments.filter(appointment => apptObj[appointment].interview !== null);
+  /**
+   * 
+   * @param {array} dailyApptArr - array of appointments for a day
+   */
+  function spotsRemaining(dailyApptArr) {
+
+    const spotsFilled = dailyApptArr.filter(appointment => state.appointments[appointment].interview !== null);
 
     return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
   }
-  return { state, setDay, bookInterview, cancelInterview, spotsRemaining }
+
+  /**
+   * 
+   * @param {object} days - days object
+   */
+  function spotsPerDay(days) {
+    let dayID = Object.keys(days);
+    for (let day of dayID) {
+      let dailyApptArr = days[day].appointments;
+      days[day].spots = spotsRemaining(dailyApptArr);
+    }
+    return days;
+  }
+  return { state, setDay, bookInterview, cancelInterview }
 }
 
 
@@ -89,7 +111,12 @@ export default function useApplicationData() {
 
 
 
+// function spotsRemaining(apptObj) {
+//   const appointments = Object.keys(apptObj);
+//   const spotsFilled = appointments.filter(appointment => apptObj[appointment].interview !== null);
 
+//   return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
+// }
 
 
 

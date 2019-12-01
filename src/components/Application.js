@@ -4,18 +4,21 @@ import "components/Application.scss";
 import Appointment from "components/Appointment";
 import DayList from "components/DayList";
 import useApplicationData from "hooks/useApplicationData.js"
-// import { cloneWithoutLoc } from "@babel/types";
 const { getAppointmentsForDay, getInterview, getInterviewersForDay } = require("../helpers/selectors.js");
-// const axios = require("axios");
 
 export default function Application(props) {
-
   const {
     state,
     setDay,
     bookInterview,
     cancelInterview
   } = useApplicationData();
+  console.log("+++++++++++++STATEDAYS+++++++++____", state.days);
+  
+
+  // for (let dayID of state.days){
+  //   console.log("------------------------spots",state.days[dayID].spots)
+  // }
 
   const apps = getAppointmentsForDay(state, state.day);
   console.log(apps);
