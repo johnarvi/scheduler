@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 const axios = require("axios");
 
 const SET_DAY = "SET_DAY";
@@ -62,13 +62,22 @@ export default function useApplicationData() {
   function bookInterview(id, interview) {
     return axios.put("/api/appointments/" + id, {interview})
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
+      .then(() => spotsRemaining(state.appointments))
   }
 
   function cancelInterview(id) {
     return axios.delete("/api/appointments/" + id)
-    .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
+      .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
+      .then(() => spotsRemaining(state.appointments))
   }
-  return { state, setDay, bookInterview, cancelInterview }
+
+  function spotsRemaining(apptObj) {
+    const appointments = Object.keys(apptObj);
+    const spotsFilled = appointments.filter(appointment => apptObj[appointment].interview !== null);
+
+    return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
+  }
+  return { state, setDay, bookInterview, cancelInterview, spotsRemaining }
 }
 
 
