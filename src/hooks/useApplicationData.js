@@ -61,10 +61,10 @@ export default function useApplicationData() {
   function bookInterview(id, interview) {
     return axios.put("/api/appointments/" + id, {interview})
       .then(() => {
+        // reduces the number of spots by 1 when an interview is booked
         const currDayName = state.day;
         const dayObj = state.days.find(day => day.name === currDayName);
         state.days[dayObj.id-1].spots--;
-        // dispatch({type: SET_INTERVIEW, id, interview});
       })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
   }
@@ -72,10 +72,10 @@ export default function useApplicationData() {
   function cancelInterview(id) {
     return axios.delete("/api/appointments/" + id)
       .then(() => {
+        // increases the number of spots by 1 when an interview is booked
         const currDayName = state.day;
         const dayObj = state.days.find(day => day.name === currDayName);
         state.days[dayObj.id-1].spots++;
-        // dispatch({type: SET_INTERVIEW, id, interview: null})
       })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
       
