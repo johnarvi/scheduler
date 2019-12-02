@@ -62,9 +62,11 @@ export default function useApplicationData() {
     return axios.put("/api/appointments/" + id, {interview})
       .then(() => {
         // reduces the number of spots by 1 when an interview is booked
+        if (state.appointments[id].interview === null) {
         const currDayName = state.day;
         const dayObj = state.days.find(day => day.name === currDayName);
         state.days[dayObj.id-1].spots--;
+        }
       })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
   }
