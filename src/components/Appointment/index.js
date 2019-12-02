@@ -39,15 +39,15 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    if (!name || !interviewer) {
-      transition(ERROR_APPOINTMENT)
-    } else {
+    // if (!name || !interviewer) {
+    //   transition(ERROR_APPOINTMENT)
+    // } else {
     transition(SAVING);
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch(error => transition(ERROR_SAVE, true));
-    }
+    // }
     
   };
 
@@ -116,12 +116,12 @@ export default function Appointment(props) {
         onClose={() => back()}
       />
     )}
-    {mode === ERROR_APPOINTMENT && (
+    {/* {mode === ERROR_APPOINTMENT && (
       <Error
         message = {ERROR_APPOINTMENT}
         onClose={() => back()}
       />
-    )}
+    )} */}
   </article>
   );
 }
