@@ -28,6 +28,7 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const ERROR_DELETE = "Could not delete appointment"
   const ERROR_SAVE = "Could not save appointment"
+  const ERROR_APPOINTMENT = "Please fill in the student name and select an interviewer"
   console.log("props.interview", props.interview)
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -38,11 +39,15 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
+    if (!name || !interviewer) {
+      transition(ERROR_APPOINTMENT)
+    } else {
     transition(SAVING);
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch(error => transition(ERROR_SAVE, true));
+    }
     
   };
 
@@ -111,7 +116,12 @@ export default function Appointment(props) {
         onClose={() => back()}
       />
     )}
-    
+    {mode === ERROR_APPOINTMENT && (
+      <Error
+        message = {ERROR_APPOINTMENT}
+        onClose={() => back()}
+      />
+    )}
   </article>
   );
 }

@@ -13,12 +13,6 @@ export default function Application(props) {
     bookInterview,
     cancelInterview
   } = useApplicationData();
-  console.log("+++++++++++++STATEDAYS+++++++++____", state.days);
-  
-
-  // for (let dayID of state.days){
-  //   console.log("------------------------spots",state.days[dayID].spots)
-  // }
 
   const apps = getAppointmentsForDay(state, state.day);
   console.log(apps);
