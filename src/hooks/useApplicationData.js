@@ -6,7 +6,6 @@ const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
 function reducer(state, action) {
-  console.log("-------------STATE-------------",state.days[1] )
   switch (action.type) {
 
     case SET_DAY:
@@ -21,11 +20,6 @@ function reducer(state, action) {
       }
     case SET_INTERVIEW: {
       const { id, interview } = action;
-
-      // for (let day of state.days) {
-
-      // }
-      console.log("***************************//////////////*******",state.days[0].spots)
       return {
         ...state,
         appointments: {
@@ -66,39 +60,27 @@ export default function useApplicationData() {
 
   function bookInterview(id, interview) {
     return axios.put("/api/appointments/" + id, {interview})
+      .then(() => {
+        const currDayName = state.day;
+        const dayObj = state.days.find(day => day.name === currDayName);
+        state.days[dayObj.id-1].spots--;
+        // dispatch({type: SET_INTERVIEW, id, interview});
+      })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
-      .then(() => spotsPerDay(state.days))
   }
 
   function cancelInterview(id) {
     return axios.delete("/api/appointments/" + id)
+      .then(() => {
+        const currDayName = state.day;
+        const dayObj = state.days.find(day => day.name === currDayName);
+        state.days[dayObj.id-1].spots++;
+        // dispatch({type: SET_INTERVIEW, id, interview: null})
+      })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
-      .then(() => spotsPerDay(state.days))
+      
   }
 
-  /**
-   * 
-   * @param {array} dailyApptArr - array of appointments for a day
-   */
-  function spotsRemaining(dailyApptArr) {
-
-    const spotsFilled = dailyApptArr.filter(appointment => state.appointments[appointment].interview !== null);
-
-    return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
-  }
-
-  /**
-   * 
-   * @param {object} days - days object
-   */
-  function spotsPerDay(days) {
-    let dayID = Object.keys(days);
-    for (let day of dayID) {
-      let dailyApptArr = days[day].appointments;
-      days[day].spots = spotsRemaining(dailyApptArr);
-    }
-    return days;
-  }
   return { state, setDay, bookInterview, cancelInterview }
 }
 
@@ -112,21 +94,21 @@ export default function useApplicationData() {
 
 
 // function spotsRemaining(apptObj) {
-//   const appointments = Object.keys(apptObj);
-//   const spotsFilled = appointments.filter(appointment => apptObj[appointment].interview !== null);
+  //   const appointments = Object.keys(apptObj);
+  //   const spotsFilled = appointments.filter(appointment => apptObj[appointment].interview !== null);
+  
+  //   return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
+  // }
+  
 
-//   return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
-// }
+  
+  
+  
+  
 
-
-
-
-
-
-
-
-// // const setDay = day => setState({ ...state, day });
-// // const [state, setState] = useState({
+  
+  // // const setDay = day => setState({ ...state, day });
+  // // const [state, setState] = useState({
 // //   day: "Monday",
 // //   days: [],
 // //   appointments: {},
@@ -134,30 +116,59 @@ export default function useApplicationData() {
 // // });
 
 // function bookInterview(id, interview) {
-//   const appointment = {
+  //   const appointment = {
 //     ...state.appointments[id],
 //     interview: { ...interview }
 //   };
 //   const appointments = {
-//     ...state.appointments,
-//     [id]: appointment
-//   };
-//   return axios.put("/api/appointments/" + id, {interview})
-//     .then(() => setState({...state, appointments}))
-// }
-
-// function cancelInterview(id) {
-//   const appointment = {
-//     ...state.appointments[id],
+  //     ...state.appointments,
+  //     [id]: appointment
+  //   };
+  //   return axios.put("/api/appointments/" + id, {interview})
+  //     .then(() => setState({...state, appointments}))
+  // }
+  
+  // function cancelInterview(id) {
+    //   const appointment = {
+      //     ...state.appointments[id],
 //     interview: null
 //   };
 //   const appointments = {
-//     ...state.appointments,
+  //     ...state.appointments,
 //     [id]: appointment
 //   };
-  
+
 //   return axios.delete("/api/appointments/" + id)
 //   .then(() => setState({...state, appointments}))
 // }
 // return { state, setDay, bookInterview, cancelInterview}
+// }
+
+// /**
+//  * 
+//  * @param {array} dailyApptArr - array of appointments for a day
+//  */
+// function spotsRemaining(dailyApptArr) {
+//   if (!dailyApptArr || !Array.isArray(dailyApptArr)) {
+//    return "Error - the appointments were not passed in";
+//   }
+//   const spotsFilled = dailyApptArr.filter(appointment => state.appointments[appointment].interview !== null);
+
+//   return (spotsFilled && (spotsFilled.length <= 5 || spotsFilled.length >= 0)) ? 5 - spotsFilled.length : "Error";
+// }
+
+// /**
+//  * 
+//  * @param {object} days - days object
+//  */
+// function spotsPerDay(days) {
+//   if (!days) {
+//     return "Error - the days were not passed in";
+//    }
+//   let dayID = Object.keys(days);
+//   for (let day of dayID) {
+//     let dailyApptArr = days[day].appointments;
+//     days[day].spots = spotsRemaining(dailyApptArr);
+//   }
+//   return days;
 // }
