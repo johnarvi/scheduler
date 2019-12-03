@@ -8,6 +8,7 @@ const SET_INTERVIEW = "SET_INTERVIEW";
 function reducer(state, action) {
   switch (action.type) {
 
+
     case SET_DAY:
       return { ...state, day: action.day }
 
@@ -22,6 +23,20 @@ function reducer(state, action) {
       const { id, interview } = action;
       return {
         ...state,
+        days: state.days.map((day) => {
+          let spotDelta = 0;
+          if(day.name === state.day) {
+            if (interview && state.appointments[id].interview) {
+              spotDelta = 0;
+            } else if(interview) {
+              spotDelta = -1;
+            } else {
+              spotDelta = 1;
+            }
+          } 
+          return {...day,
+                  spots: day.spots + spotDelta};
+        }),
         appointments: {
           ...state.appointments,
           [id]: {
@@ -39,7 +54,6 @@ function reducer(state, action) {
 }
 
 export default function useApplicationData() {
-
   const setDay = day => dispatch({ type: SET_DAY, day });
   const [state, dispatch] = useReducer(reducer, {
   day: "Monday",
@@ -60,25 +74,11 @@ export default function useApplicationData() {
 
   function bookInterview(id, interview) {
     return axios.put("/api/appointments/" + id, {interview})
-      .then(() => {
-        // reduces the number of spots by 1 when an interview is booked
-        if (state.appointments[id].interview === null) {
-        const currDayName = state.day;
-        const dayObj = state.days.find(day => day.name === currDayName);
-        state.days[dayObj.id-1].spots--;
-        }
-      })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview}))
   }
 
   function cancelInterview(id) {
     return axios.delete("/api/appointments/" + id)
-      .then(() => {
-        // increases the number of spots by 1 when an interview is booked
-        const currDayName = state.day;
-        const dayObj = state.days.find(day => day.name === currDayName);
-        state.days[dayObj.id-1].spots++;
-      })
       .then(() => dispatch({type: SET_INTERVIEW, id, interview: null}))
       
   }
