@@ -8,7 +8,6 @@ import Application from "components/Application";
 
 import axios from "axios";
 
-
 describe("Application", () => {
   it("changes the schedule when a new day is selected", async () => {
     const { getByText } = render(<Application />);
