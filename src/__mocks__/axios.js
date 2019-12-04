@@ -53,7 +53,7 @@ const fixtures = {
   }
 };
 
-
+// mocks a get, put and delete request for testing purposes
 export default {
   defaults: { baseURL: "" },
   get: jest.fn(url => {

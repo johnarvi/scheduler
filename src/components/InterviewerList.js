@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import "components/InterviewerList.scss";
 import InterviewerListItem from "components/InterviewerListItem";
 
+/**
+ * InterviewerList - converts an array of intervier objects into a component
+ * @param {*} props 
+ */
+
 export default function InterviewerList(props) {
   InterviewerList.propTypes = {
     value: PropTypes.number,
@@ -15,17 +20,15 @@ export default function InterviewerList(props) {
         name={interviewer.name}
         avatar={interviewer.avatar}
         selected={interviewer.id === props.value}
-        setInterviewer={event => props.onChange(interviewer.id)}
+        setInterviewer={e => props.onChange(interviewer.id)}
       />
     );
   });
   
-
   return (
     <section className="interviewers">
     <h4 className="interviewers__header text--light">Interviewer</h4>
     <ul className="interviewers__list">{interviewers}</ul>
     </section>
   );
-
 }

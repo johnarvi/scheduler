@@ -1,6 +1,11 @@
 import React from "react";
 import DayListItem from "components/DayListItem";
 
+/**
+ * DayList - converts an array of dayListItems objects into a component
+ * @param {object} props 
+ */
+
 export default function DayList(props) {
   const days = props.days.map(day => {
     return (

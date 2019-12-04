@@ -25,10 +25,16 @@ export default function Appointment(props) {
   const ERROR_SAVE = "Could not save appointment";
   const ERROR_APPOINTMENT = "Please select an interviewer";
 
+  // sets the visual state of the cards based on user events or initial renders
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-  
+
+  /**
+   * save - sets an appointment based on name and interviewer
+   * @param {string} name - student name
+   * @param {number} interviewer - interviewer.id
+   */
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -43,15 +49,17 @@ export default function Appointment(props) {
       .then(() => transition(SHOW))
       .catch(e => transition(ERROR_SAVE, true));
     }
-    
   };
 
+  /**
+   * deleteApp - deletes an interview
+   */
   function deleteApp () {
     transition(DELETING, true);
     props
       .cancelInterview(props.id)
       .then(() => transition(EMPTY))
-      .catch(error => transition(ERROR_DELETE, true));
+      .catch(e => transition(ERROR_DELETE, true));
   };
   
   return (

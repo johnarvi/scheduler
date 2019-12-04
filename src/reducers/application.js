@@ -2,9 +2,13 @@ export const SET_DAY = "SET_DAY";
 export const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 export const SET_INTERVIEW = "SET_INTERVIEW";
 
+/**
+ * reducer - updates the state based on the action type 
+ * @param {object} state 
+ * @param {string} action 
+ */
 export default function reducer(state, action) {
   switch (action.type) {
-
 
     case SET_DAY:
       return { ...state, day: action.day }
@@ -16,6 +20,7 @@ export default function reducer(state, action) {
         appointments: action.appointments,
         interviewers: action.interviewers
       }
+
     case SET_INTERVIEW: {
       const { id, interview } = action;
       return {
@@ -43,6 +48,7 @@ export default function reducer(state, action) {
         }
       }
     }  
+
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
