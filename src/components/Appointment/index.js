@@ -1,6 +1,3 @@
-//import Appointment from "components/Appointment"
-// how to call the above in other files
-
 import React from "react";
 import useVisualMode from "hooks/useVisualMode.js";
 
@@ -14,8 +11,6 @@ import Error from "components/Appointment/Error";
 
 
 import "components/Appointment/styles.scss";
-// import Button from "components/Button";
-
 
 export default function Appointment(props) {
 
@@ -28,7 +23,7 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const ERROR_DELETE = "Could not delete appointment";
   const ERROR_SAVE = "Could not save appointment";
-  const ERROR_APPOINTMENT = "Please fill in the student name and select an interviewer";
+  const ERROR_APPOINTMENT = "Please select an interviewer";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -39,15 +34,15 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    // if (!name || !interviewer) {
-    //   transition(ERROR_APPOINTMENT)
-    // } else {
+    if (!interview.interviewer) {
+      transition(ERROR_APPOINTMENT)
+    } else {
     transition(SAVING);
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(error => transition(ERROR_SAVE, true));
-    // }
+      .catch(e => transition(ERROR_SAVE, true));
+    }
     
   };
 
@@ -116,12 +111,12 @@ export default function Appointment(props) {
         onClose={() => back()}
       />
     )}
-    {/* {mode === ERROR_APPOINTMENT && (
+    {mode === ERROR_APPOINTMENT && (
       <Error
         message = {ERROR_APPOINTMENT}
         onClose={() => back()}
       />
-    )} */}
+    )}
   </article>
   );
 }

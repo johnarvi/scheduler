@@ -16,8 +16,6 @@ describe("Appointments", () => {
     cy.contains("Save").click();
     cy.contains("SAVING").should("exist");
     cy.contains("SAVING").should("not.exist");
-    // cy.get(".appointment__card--show").should('have.length', 2)
-    //   .eq(1).contains("Lydia Miller-Jones").contains("Sylvia Palmer");
     cy.get(".appointment__card--show").should('have.length', 2)
     .children()
       .should('contain', "Lydia Miller-Jones")
