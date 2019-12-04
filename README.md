@@ -21,3 +21,5 @@ npm test
 ```sh
 npm run storybook
 ```
+## Responsive, interview scheduling software
+Allows users to select the day of the week and book slots for interviews
